@@ -38,8 +38,13 @@ const Login = () => {
     }
   };
 
+  console.log(error);
+
   return (
-    <div className="flex- justify-center item-center">
+    <form
+      className="flex items-center justify-center h-screen"
+      onSubmit={handleSubmit}
+    >
       <Card className="mx-auto max-w-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -56,15 +61,35 @@ const Login = () => {
                 placeholder="m@example.com"
                 required
                 type="email"
+                onChange={handleChange}
+                value={data.email}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" required type="password" />
+              <Input
+                id="password"
+                required
+                type="password"
+                placeholder="*********"
+                onChange={handleChange}
+                value={data.password}
+              />
+              {error && (
+                <div className="w-370 p-15 m-5 mb-0 text-14 bg-red-500 text-white rounded-5 text-center">
+                  {error}
+                </div>
+              )}
             </div>
             <Button className="w-full" type="submit">
               Login
             </Button>
+            <div className="text-small text-center p-1">
+              Not a user?{" "}
+              <Link to="/signup" className="font-bold border-b-2 border-black animate-[fade-in_1s_ease-in-out]">
+                Sign Up !
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -105,7 +130,7 @@ const Login = () => {
           </Link>
         </div>
       </div> */}
-    </div>
+    </form>
   );
 };
 
