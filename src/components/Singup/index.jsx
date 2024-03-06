@@ -61,7 +61,7 @@ const Signup = () => {
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">First Name</Label>
+              <Label htmlFor="firstName">First Name</Label>
               <Input
                 type="text"
                 placeholder="First Name"
@@ -72,7 +72,7 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">First Name</Label>
+              <Label htmlFor="email">Last Name</Label>
               <Input
                 type="text"
                 placeholder="Last Name"
@@ -87,8 +87,10 @@ const Signup = () => {
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 placeholder="m@example.com"
                 required
+                onChange={handleChange}
                 type="email"
                 value={data.email}
               />
@@ -98,10 +100,16 @@ const Signup = () => {
               <Input
                 id="password"
                 required
+                onChange={handleChange}
                 type="password"
                 value={data.password}
               />
             </div>
+            {error && (
+              <div className="w-370 p-15 m-5 mb-0 text-14 bg-red-500 text-white rounded-5 text-center">
+                {error}
+              </div>
+            )}
             <Button className="w-full text-md" type="submit">
               Signup
             </Button>
