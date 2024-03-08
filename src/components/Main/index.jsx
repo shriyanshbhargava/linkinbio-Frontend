@@ -1,38 +1,54 @@
 import { Button } from "@/components/ui/button";
-import styles from "./styles.module.css";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+import { useAuth } from "../../hooks/useAuth";
 
 const Main = () => {
+  const menu = [
+    { label: "Home", link: "/login" },
+    { label: "About", link: "/" },
+    { label: "Contact", link: "/" },
+  ];
+
+  const { logoutUser } = useAuth();
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
+    logoutUser();
   };
 
   return (
-    <div className="navbar bg-teal-500 p-4 flex items-center justify-between">
-        <NavigationMenu >
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink>
-                  <Button onClick={handleLogout}>Logout</Button>
-                </NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      
-    </div>
+    <nav className="bg-gray-800 p-4 flex justify-between items-center">
+      <ul className="flex space-x-4">
+        {menu.map((item, index) => (
+          <li key={index}>
+            <a href={item.link} className="text-white">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="flex justify-right">
+              Profile
+            </NavigationMenuTrigger>
+
+            <NavigationMenuContent>
+              <NavigationMenuLink>
+                <Button onClick={handleLogout}>Logout</Button>
+              </NavigationMenuLink>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </nav>
   );
 };
 

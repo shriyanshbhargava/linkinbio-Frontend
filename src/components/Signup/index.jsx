@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+// Signup.js
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { VALID_EMAIL_REGEX } from "../../utils/constants";
+
 import {
   CardTitle,
   CardDescription,
@@ -11,21 +15,17 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
-const Login = () => {
+const Signup = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const { loginUser } = useAuth();
-  const { loginError } = useAuth();
-
+  const { signupUser, signupError } = useAuth();
 
   const onSubmit = (formData) => {
-    loginUser(formData);
+    signupUser(formData);
   };
 
   return (
@@ -35,13 +35,44 @@ const Login = () => {
     >
       <Card className="mx-auto max-w-sm">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardTitle className="text-2xl font-bold">Sign Up !</CardTitle>
           <CardDescription>
-            Enter your email and password to login to your account
+            Enter some basic details to make an account.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                type="text"
+                placeholder="First Name"
+                name="firstName"
+                {...register("firstName", {
+                  required: "First Name is required",
+                })}
+              />
+              {errors.firstName && (
+                <div className="text-red-500 text-sm">
+                  {errors.firstName.message}
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                type="text"
+                placeholder="Last Name"
+                name="lastName"
+                {...register("lastName", { required: "Last Name is required" })}
+              />
+              {errors.lastName && (
+                <div className="text-red-500 text-sm">
+                  {errors.lastName.message}
+                </div>
+              )}
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -51,7 +82,7 @@ const Login = () => {
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    value: VALID_EMAIL_REGEX,
                     message: "Invalid email address",
                   },
                 })}
@@ -68,7 +99,6 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
-                placeholder="********"
                 {...register("password", { required: "Password is required" })}
               />
               {errors.password && (
@@ -77,18 +107,18 @@ const Login = () => {
                 </div>
               )}
             </div>
-            {loginError && (
+            {signupError && (
               <div className="w-370 p-15 m-5 mb-0 text-14 bg-red-500 text-white rounded-5 text-center">
-                {loginError}
+                {signupError}
               </div>
             )}
-            <Button className="w-full" type="submit">
-              Login
+            <Button className="w-full text-md" type="submit">
+              Signup
             </Button>
             <div className="text-small text-center p-1">
-              Not a user?{" "}
-              <Link to="/signup" className="font-bold border-b-2 border-black">
-                Sign Up !
+              Already a user?{" "}
+              <Link to="/login" className="font-bold border-b-2 border-black">
+                Login
               </Link>
             </div>
           </div>
@@ -98,4 +128,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
