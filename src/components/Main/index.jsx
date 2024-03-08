@@ -10,32 +10,29 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 
 const Main = () => {
+  const menu = [
+    { label: "Home", link: "/login" },
+    { label: "About", link: "/" },
+    { label: "Contact", link: "/" },
+  ];
+
   const { logoutUser } = useAuth();
 
   const handleLogout = () => {
     logoutUser();
-    console.log("Logout successful! Redirecting...");
   };
 
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
       <ul className="flex space-x-4">
-        <li>
-          <a href="/login" className="text-white">
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="/" className="text-white">
-            About
-          </a>
-        </li>
-        <li>
-          <a href="/" className="text-white">
-            Contact
-          </a>
-        </li>
-      </ul>{" "}
+        {menu.map((item, index) => (
+          <li key={index}>
+            <a href={item.link} className="text-white">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>

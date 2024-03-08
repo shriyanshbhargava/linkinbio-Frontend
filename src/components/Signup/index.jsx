@@ -3,6 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
+import { VALID_EMAIL_REGEX } from "../../utils/constants";
 
 import {
   CardTitle,
@@ -81,7 +82,7 @@ const Signup = () => {
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    value: VALID_EMAIL_REGEX,
                     message: "Invalid email address",
                   },
                 })}

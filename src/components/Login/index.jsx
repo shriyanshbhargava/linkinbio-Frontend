@@ -20,11 +20,11 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const { loginUser } = useAuth();
 
-  const onSubmit = (data) => {
-    loginUser(data);
+  const onSubmit = (formData) => {
+    loginUser(formData);
   };
 
   return (
