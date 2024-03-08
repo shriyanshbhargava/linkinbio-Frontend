@@ -20,8 +20,9 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const [error] = useState("");
   const { loginUser } = useAuth();
+  const { loginError } = useAuth();
+
 
   const onSubmit = (formData) => {
     loginUser(formData);
@@ -76,9 +77,9 @@ const Login = () => {
                 </div>
               )}
             </div>
-            {error && (
+            {loginError && (
               <div className="w-370 p-15 m-5 mb-0 text-14 bg-red-500 text-white rounded-5 text-center">
-                {error}
+                {loginError}
               </div>
             )}
             <Button className="w-full" type="submit">

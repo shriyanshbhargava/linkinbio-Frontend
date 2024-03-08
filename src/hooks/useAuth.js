@@ -15,13 +15,24 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (formData) => {
     try {
-      const user = await loginHandler(formData);
+      const user = await loginMutation.mutate(formData);
       localStorage.setItem("token", user.data);
       setUser(user.data);
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/dashboard");
     } catch (error) {
-      // Handle login error
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        console.error(
+          "Error message from server:",
+          error.response.data.message
+        );
+      } else {
+        console.error("An unexpected error occurred during login.");
+      }
     }
   };
 
@@ -30,8 +41,8 @@ export const AuthProvider = ({ children }) => {
       await signupMutation.mutate(formData);
       navigate("/login");
     } catch (error) {
-      // Handle signup error
-    }
+      console.error("Error:", error.response.data);
+      throw new Error(error.response.data.message);
   };
 
   const logoutUser = async () => {
@@ -40,8 +51,8 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       navigate("/login", { replace: true });
     } catch (error) {
-      // Handle logout error
-    }
+      console.error("Error:", error.response.data);
+      throw new Error(error.response.data.message);
   };
 
   const value = useMemo(
