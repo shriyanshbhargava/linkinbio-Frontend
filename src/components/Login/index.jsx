@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-
+import { useAuth } from "../../hooks/useAuth";
 import {
   CardTitle,
   CardDescription,
@@ -13,32 +11,20 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm();
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
 
-  const onSubmit = async (formData) => {
-    try {
-      const url = "http://localhost:8080/api/auth";
-      const { data: res } = await axios.post(url, formData);
-      localStorage.setItem("token", res.token);
-      navigate("/"); // Replace with the desired route after successful login
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message);
-      }
-    }
+  const [error, setError] = useState("");
+  const { loginUser } = useAuth();
+
+  const onSubmit = (data) => {
+    loginUser(data);
   };
 
   return (
@@ -81,6 +67,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
+                placeholder="********"
                 {...register("password", { required: "Password is required" })}
               />
               {errors.password && (

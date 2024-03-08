@@ -1,18 +1,26 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Main from "./components/Main";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import { AuthProvider } from "./hooks/useAuth";
+import ProtectedRoute from "components/ProtectedRoute";
 
 function App() {
-  const user = localStorage.getItem("token");
-
   return (
-    <Routes>
-      {user && <Route path="/" exact element={<Main />} />}
-      <Route path="/signup" exact element={<Signup />} />
-      <Route path="/login" exact element={<Login />} />
-      <Route path="/" element={<Navigate replace to="/login" />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={
+            // <ProtectedRoute>
+              <Main />
+            // </ProtectedRoute>
+          }
+        />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

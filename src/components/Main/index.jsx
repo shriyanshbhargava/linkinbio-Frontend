@@ -7,14 +7,14 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 const Main = () => {
-  const navigate = useNavigate();
+  const { logoutUser } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    logoutUser();
+    console.log("Logout successful! Redirecting...");
   };
 
   return (

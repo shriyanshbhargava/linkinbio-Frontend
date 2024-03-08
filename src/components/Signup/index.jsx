@@ -1,7 +1,8 @@
+// Signup.js
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 import {
   CardTitle,
@@ -18,29 +19,12 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
+  const { signupUser, signupError } = useAuth();
 
-  const onSubmit = async (formData) => {
-    try {
-      const url = "http://localhost:8080/api/users";
-      const { data: res } = await axios.post(url, formData);
-      navigate("/login");
-      console.log(res.message);
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError("server", {
-          type: "manual",
-          message: error.response.data.message,
-        });
-      }
-    }
+  const onSubmit = (formData) => {
+    signupUser(formData);
   };
 
   return (
@@ -122,9 +106,9 @@ const Signup = () => {
                 </div>
               )}
             </div>
-            {errors.server && (
+            {signupError && (
               <div className="w-370 p-15 m-5 mb-0 text-14 bg-red-500 text-white rounded-5 text-center">
-                {errors.server.message}
+                {signupError}
               </div>
             )}
             <Button className="w-full text-md" type="submit">
